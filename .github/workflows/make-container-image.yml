@@ -37,27 +37,27 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.CONTAINER }}
 
-      # - name: Set up SSH agent
-      #   shell: bash
-      #   run: |
-      #     set -eu
-      #     mkdir -p "$HOME/.ssh"
-      #     chmod 700 "$HOME/.ssh"
+      - name: Set up SSH agent
+        shell: bash
+        run: |
+          set -eu
+          mkdir -p "$HOME/.ssh"
+          chmod 700 "$HOME/.ssh"
 
-      #     # Add GitHub host key to avoid interactive verification
-      #     ssh-keyscan github.com >> "$HOME/.ssh/known_hosts"
-      #     chmod 644 "$HOME/.ssh/known_hosts"
+          # Add GitHub host key to avoid interactive verification
+          ssh-keyscan github.com >> "$HOME/.ssh/known_hosts"
+          chmod 644 "$HOME/.ssh/known_hosts"
 
-      #     # Start agent
-      #     eval "$(ssh-agent -s)"
+          # Start agent
+          eval "$(ssh-agent -s)"
 
-      #     # Load private key from secret
-      #     printf '%s\n' "${{ secrets.ID_ED25519_GITHUB_ACTIONS_SUBREPO_READ }}" > "$HOME/.ssh/id_ed25519_github_actions_subrepo_read"
-      #     chmod 600 "$HOME/.ssh/id_ed25519_github_actions_subrepo_read"
-      #     ssh-add "$HOME/.ssh/id_ed25519_github_actions_subrepo_read"
+          # Load private key from secret
+          printf '%s\n' "${{ secrets.ID_ED25519_GITHUB_ACTIONS_SUBREPO_READ }}" > "$HOME/.ssh/id_ed25519_github_actions_subrepo_read"
+          chmod 600 "$HOME/.ssh/id_ed25519_github_actions_subrepo_read"
+          ssh-add "$HOME/.ssh/id_ed25519_github_actions_subrepo_read"
 
-      #     # Expose agent socket to later steps
-      #     echo "SSH_AUTH_SOCK=${SSH_AUTH_SOCK}" >> "$GITHUB_ENV"
+          # Expose agent socket to later steps
+          echo "SSH_AUTH_SOCK=${SSH_AUTH_SOCK}" >> "$GITHUB_ENV"
 
         # This step uses [docker/metadata-action]
         # (https://github.com/docker/metadata-action#about) 
