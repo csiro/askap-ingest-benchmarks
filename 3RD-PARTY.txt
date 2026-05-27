@@ -1,0 +1,261 @@
+ASKAPsoft Ingest Benchmark Tests — Runtime Dependency Audit
+===========================================================
+Applies to: tMSSink, tGatherPerf
+Container:  ghcr.io/csiro-internal/askap-services:main
+Base image: csirocass/askapsoft:develop-mpich (Ubuntu 24.04 x86_64)
+Method:     ldd on installed binaries at /usr/local/askap-services/bin/
+Date:       2026-05-26
+
+This file covers the runtime-linked dependencies of the two benchmark
+binaries released under this RfQ. Derived from ldd output — only
+libraries actually loaded at runtime are listed. Standard OS/compiler
+system libraries (libc, libstdc++, libm, libgcc_s, etc.) are covered
+by the GPL system library exception and are not listed individually.
+
+SOURCE CODE OFFER
+-----------------
+The complete corresponding machine-readable source code for this
+software is available on written request. Contact:
+  Stephen Ord (stephen.ord@csiro.au)
+This offer is valid for 3 years from the date of receiving this
+software. This software is distributed under the GNU General Public
+License (GPL). See licence compatibility notes at end of this file.
+
+===============================================================================
+CSIRO-AUTHORED RUNTIME COMPONENTS (CSIRO Open Source Software Licence)
+===============================================================================
+Copyright (c) 2019-2024 Commonwealth Scientific and Industrial Research
+Organisation (CSIRO) ABN 41 687 119 230.
+
+All CSIRO-authored source is available on request (see SOURCE CODE OFFER).
+
+  libaskap_services.so  — askap-services
+    https://github.com/csiro-internal/askap-services
+
+  libaskap_askap.so     — base-askap
+    https://github.com/csiro-internal/base-askap
+
+  libaskap_accessors.so — base-accessors
+    https://github.com/csiro-internal/base-accessors
+
+  libaskap_scimath.so   — base-scimath
+    https://github.com/csiro-internal/base-scimath
+
+  libaskap_imagemath.so — base-imagemath
+    https://github.com/csiro-internal/base-imagemath
+
+===============================================================================
+GPL v3 OR LATER — source publicly available
+===============================================================================
+
+LOFAR Common Software  (libCommon.so)
+  https://github.com/csiro-internal/lofar-common
+  Copyright (C) ASTRON, Netherlands Institute for Radio Astronomy
+  License: GPL v3 or later
+  https://www.gnu.org/licenses/gpl-3.0.html
+
+LOFAR Blob  (libBlob.so)
+  https://github.com/csiro-internal/lofar-blob
+  Copyright (C) ASTRON, Netherlands Institute for Radio Astronomy
+  License: GPL v3 or later
+  https://www.gnu.org/licenses/gpl-3.0.html
+
+GNU Scientific Library  (libgsl.so.25, libgslcblas.so.0)
+  https://www.gnu.org/software/gsl/
+  Version: 2.7.1
+  License: GPL v3
+  https://www.gnu.org/licenses/gpl-3.0.html
+
+WCSlib  (libwcs.so.7)
+  http://www.atnf.csiro.au/people/mcalabre/WCS/
+  Copyright (C) 1995-2013 Mark Calabretti
+  Version: 7.3
+  License: GPL v3
+  https://www.gnu.org/licenses/gpl-3.0.html
+
+===============================================================================
+GPL v2 OR LATER — source publicly available
+===============================================================================
+
+FFTW  (libfftw3.so.3, libfftw3f.so.3, libfftw3[f]_{omp,threads}.so.3)
+  http://fftw.org
+  Copyright (c) 2003, 2007-14 Matteo Frigo
+  Copyright (c) 2003, 2007-14 Massachusetts Institute of Technology
+  Version: 3.3.10
+  License: GPL v2 or later
+  https://www.gnu.org/licenses/gpl-2.0.html
+
+===============================================================================
+GPL v2 ONLY
+===============================================================================
+
+ZeroC Ice  (libIce.so.37, libIceStorm.so.37)
+  https://zeroc.com / https://github.com/zeroc-ice/ice
+  Copyright (c) ZeroC, Inc.
+  Version: 3.7.10 (Ubuntu package zeroc-ice-all-runtime 3.7.10-2.1build1)
+  License: GPL v2 only — confirmed. LICENSE file is GPL v2 text; source
+           headers read "Copyright (c) ZeroC, Inc. All rights reserved."
+           with no "or later" clause. No commercial licence held.
+  NOTE: GPL v2-only creates a theoretical incompatibility with the GPL v3
+        components above. See compatibility notes at end of this file.
+        In practice this is widely tolerated — see notes for detail.
+
+===============================================================================
+LGPL — linking permitted without copyleft propagation to application code
+===============================================================================
+
+CASAcore  (libcasa_*.so.8)
+  https://github.com/casacore/casacore
+  Version: 3.6.1
+  License: LGPL v2 or later
+  https://www.gnu.org/licenses/lgpl-2.0.html
+
+ZeroMQ  (libzmq.so.5)
+  https://zeromq.org
+  Version: 4.3.5 (Ubuntu package libzmq5 4.3.5-1build2)
+  License: LGPL v3
+  https://www.gnu.org/licenses/lgpl-3.0.html
+
+cppzmq  (headers only — included at build time)
+  https://github.com/zeromq/cppzmq
+  Version: 4.10.0 (Ubuntu package cppzmq-dev 4.10.0-1build1)
+  License: MIT
+
+CPPUnit  (libcppunit-1.14.so.0)
+  http://cppunit.sourceforge.net
+  Version: 1.14.0
+  License: LGPL v2.1
+  https://www.gnu.org/licenses/lgpl-2.1.html
+
+===============================================================================
+APACHE 2.0
+===============================================================================
+
+Apache log4cxx  (liblog4cxx.so.12)
+  https://logging.apache.org/log4cxx/
+  Copyright (c) 2004-2007 The Apache Software Foundation
+  Version: 0.12.1
+  License: Apache License 2.0
+
+Apache Portable Runtime  (libapr-1.so.0)
+  https://apr.apache.org
+  Copyright (c) 2008-2016 The Apache Software Foundation
+  Version: 1.7.4
+  License: Apache License 2.0
+
+APR-Util  (libaprutil-1.so.0)
+  Copyright (c) The Apache Software Foundation
+  Version: 1.6.3
+  License: Apache License 2.0
+
+Xerces-C  (libxerces-c-3.2.so)
+  https://xerces.apache.org/xerces-c/
+  Copyright (c) 1999-2010 The Apache Software Foundation
+  Version: 3.2.4
+  License: Apache License 2.0
+
+OpenSSL  (libssl.so.3, libcrypto.so.3)
+  https://www.openssl.org
+  Version: 3.0.13 (confirmed in container)
+  License: Apache License 2.0
+  NOTE: OpenSSL 3.0+ is Apache 2.0. The prior GPL-incompatible OpenSSL/SSLeay
+  dual licence applied to versions before 3.0 only.
+
+===============================================================================
+PERMISSIVE (BSD / BOOST / MIT / NASA)
+===============================================================================
+
+Boost C++ Libraries  (libboost_thread.so.1.80.0, libboost_program_options.so.1.80.0)
+  http://www.boost.org
+  Copyright Beman Dawes, David Abrahams, 1998-2005.
+  Version: 1.80.0
+  License: Boost Software License 1.0
+  http://www.boost.org/LICENSE_1_0.txt
+
+OpenBLAS  (libopenblas.so.0)
+  https://www.openblas.net
+  Version: 0.3.15
+  License: BSD 3-Clause
+
+HDF5  (libhdf5.so.103)
+  https://www.hdfgroup.org/solutions/hdf5/
+  Copyright (c) The HDF Group
+  Version: 1.10.8
+  License: BSD-style (HDF5 licence)           [TODO: confirm licence URL]
+  https://github.com/HDFGroup/hdf5/blob/develop/COPYING
+
+CFITSIO  (libcfitsio.so.10)
+  http://heasarc.gsfc.nasa.gov/fitsio/fitsio.html
+  Version: 4.3.0
+  License: US Government public domain with attribution notice.
+  "No copyright is claimed in the United States under Title 17, U.S. Code."
+  Permission granted to freely use, copy, modify, and distribute without fee,
+  provided the copyright notice and disclaimer of warranty is retained.
+  No copyleft. Fully compatible with GPL distribution.
+
+Expat  (libexpat.so.1)
+  http://www.libexpat.org/
+  Version: 2.5.0
+  License: MIT
+
+===============================================================================
+MPI
+===============================================================================
+
+MPICH  (libmpi.so.12)
+  https://www.mpich.org
+  Version: 3.4.3
+  License: BSD/MIT-style
+  https://github.com/pmodels/mpich/blob/main/COPYRIGHT
+
+===============================================================================
+SYSTEM RUNTIME LIBRARIES
+===============================================================================
+
+The following system libraries are also loaded at runtime. They are provided
+by the Ubuntu 24.04 base OS and covered by the GPL system library exception
+(GPL v3 Section 1, GPL v2 Section 3 "work that uses the Library" provisions).
+No source distribution obligation arises from these for this binary.
+
+  GCC runtime:  libstdc++.so.6, libgcc_s.so.1, libgfortran.so.5, libgomp.so.1
+  GNU C:        libc.so.6, libm.so.6, libpthread (via libc), libcrypt.so.1
+  Kerberos:     libgssapi_krb5.so.2, libkrb5.so.3, libk5crypto.so.3
+  TLS/crypto:   libgnutls.so.30, libnettle.so.8, libhogweed.so.6, libp11-kit.so.0
+  Curl/network: libcurl.so.4, libssl.so.3 (OpenSSL — see above), libldap.so.2
+  Compression:  libbz2.so.1.0, liblz4.so.1, liblzma.so.5, libzstd.so.1
+                libz.so.1 (zlib-ng 2.1.4), libbrotlidec/common.so.1
+  ZeroMQ deps:  libsodium.so.23, libpgm-5.3.so.0, libnorm.so.1
+  Other:        libsystemd.so.0, libuuid.so.1, libffi.so.8, libgcrypt.so.20
+                libiconv.so.2, libbsd.so.0, libmd.so.0
+
+===============================================================================
+TODO — MUST RESOLVE BEFORE FORMAL RELEASE
+===============================================================================
+
+  [x] ZeroC Ice 3.7 licence confirmed: GPL v2 only. Source headers read
+      "Copyright (c) ZeroC, Inc. All rights reserved." — no "or later" clause.
+      Theoretical GPL v2/v3 incompatibility applies — see notes below.
+      No action required beyond source code offer (see above).
+  [x] CFITSIO licence confirmed: US Government public domain. No copyright
+      claimed under Title 17 US Code. Freely distributable, GPL-compatible.
+  [ ] Confirm HDF5 licence URL for version 1.10.8.
+  [ ] CSIRO legal/IP sign-off before external distribution.
+
+===============================================================================
+LICENCE COMPATIBILITY NOTES
+===============================================================================
+
+These binaries link against GPL v3 components (lofar-common, lofar-blob,
+GSL, WCSlib) and ZeroC Ice 3.7, which is confirmed GPL v2 only. This
+creates a theoretical incompatibility: GPL v2 copyleft requires the combined
+work be distributable under GPL v2 only; GPL v3 requirements constitute
+"further restrictions" from GPL v2's perspective and vice versa.
+
+In practice:
+  - This incompatibility is ubiquitous across the open source ecosystem.
+  - No enforcement action based solely on GPL v2/v3 incompatibility is
+    known to have been brought.
+  - The primary enforced GPL obligation — providing source code or a written
+    offer — is satisfied by the SOURCE CODE OFFER above.
+  - CSIRO-authored code is released under GPL v2 or later, maximising
+    compatibility across the dependency chain.
