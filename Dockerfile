@@ -16,9 +16,7 @@ FROM ${MAIN_IMAGE} AS main_image
 
 
 # The target image is Pawsey's Lustre-aware MPICH image.
-ARG TARGET_IMAGE="quay.io/pawsey/mpich-lustre-base:3.4.3_ubuntu24.04_lustrerelease_python3.11"
-FROM ${TARGET_IMAGE} AS target_image
-ARG TARGET_IMAGE="quay.io/pawsey/mpich-lustre-base:3.4.3_ubuntu24.04_lustrerelease_python3.11"
+FROM quay.io/pawsey/mpich-lustre-base:3.4.3_ubuntu24.04_lustrerelease_python3.11
 
 LABEL org.opencontainers.image.title="ASKAP Ingest Benchmarks"
 LABEL org.opencontainers.image.description="tMSSink and tGatherPerf performance benchmark binaries for ASKAP ingest"

@@ -94,4 +94,3 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             MAIN_IMAGE=ghcr.io/csiro-internal/askap-services:main
-            TARGET_IMAGE=quay.io/pawsey/mpich-lustre-base:3.4.3_ubuntu24.04_lustrerelease_python3.11
