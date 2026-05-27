@@ -30,8 +30,11 @@ COPY --from=main_image /usr/local/askap-services/bin/tGatherPerf /usr/local/aska
 COPY --from=main_image /usr/local/askap-services/etc/ /usr/local/askap-services/etc/
 COPY --from=main_image /usr/local/askap-services/lib/ /usr/local/askap-services/lib/
 COPY --from=main_image /bin/spack/ /bin/spack/
-
-# Clean up
+COPY --from=main_image /usr/local/lib/ /root/tmp/lib/
+RUN echo "Copying from temporary location" \
+    && cp -r --update=none /root/tmp/lib/* /usr/local/lib/ \
+    && rm -rf /root/tmp/lib/ \
+    && ldconfig
 
 # Install licence and notice files alongside the binaries
 COPY NOTICE         /usr/local/askap-services/NOTICES/NOTICE
