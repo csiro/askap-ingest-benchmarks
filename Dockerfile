@@ -29,11 +29,17 @@ COPY --from=main_image /usr/local/askap-services/bin/tMSSink /usr/local/askap-se
 COPY --from=main_image /usr/local/askap-services/bin/tGatherPerf /usr/local/askap-services/bin/tGatherPerf
 COPY --from=main_image /usr/local/askap-services/etc/ /usr/local/askap-services/etc/
 COPY --from=main_image /usr/local/askap-services/lib/ /usr/local/askap-services/lib/
+COPY --from=main_image /usr/bin/spack/ /usr/bin/spack/
 COPY --from=main_image /bin/spack/ /bin/spack/
-COPY --from=main_image /usr/local/lib/ /root/tmp/lib/
+# Copying to temporary location to avoid overwriting existing files in the target image.
+COPY --from=main_image /usr/local/lib/ /root/tmp/usr/local/lib/
+COPY --from=main_image /lib/x86_64-linux-gnu/ /root/tmp/lib/x86_64-linux-gnu/
+
 RUN echo "Copying from temporary location" \
-    && cp -r --update=none /root/tmp/lib/* /usr/local/lib/ \
-    && rm -rf /root/tmp/lib/ \
+    && cp -r --update=none /root/tmp/usr/local/lib/* /usr/local/lib/ \
+    && cp -r --update=none /root/tmp/lib/x86_64-linux-gnu/* /lib/x86_64-linux-gnu/ \
+    && echo "Cleaning up" \
+    && rm -rf /root/tmp \
     && ldconfig
 
 # Install licence and notice files alongside the binaries
