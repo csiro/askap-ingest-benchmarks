@@ -1,0 +1,23 @@
+ASKAP Ingest Benchmarks
+=======================
+Copyright (c) 2010-2024 Commonwealth Scientific and Industrial Research
+Organisation (CSIRO) ABN 41 687 119 230.
+
+This software is distributed under the GNU General Public License v3 or later
+(GPL v3+). See NOTICES/LICENSE for the full licence text, or visit:
+https://www.gnu.org/licenses/gpl-3.0.html
+
+SOURCE CODE OFFER
+-----------------
+In accordance with the GNU General Public License, the complete corresponding
+machine-readable source code for this software is available on written request.
+
+  Contact: Stephen Ord (stephen.ord@csiro.au)
+
+This offer is valid for 3 years from the date of receiving this software.
+
+THIRD-PARTY DEPENDENCIES
+-------------------------
+This software links against third-party components under various licences
+including GPL v3, GPL v2, and LGPL. See NOTICES/3RD-PARTY.txt for the full
+runtime dependency audit.

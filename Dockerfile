@@ -20,6 +20,7 @@ LABEL org.opencontainers.image.licenses="GPL-3.0-or-later"
 LABEL org.opencontainers.image.source="https://github.com/csiro-internal/askap-ingest-benchmarks"
 
 # Install licence and notice files alongside the binaries
+COPY NOTICE         /usr/local/askap-services/NOTICES/NOTICE
 COPY LICENSE        /usr/local/askap-services/NOTICES/LICENSE
 COPY 3RD-PARTY.txt  /usr/local/askap-services/NOTICES/3RD-PARTY.txt
 COPY README.md      /usr/local/askap-services/NOTICES/README.md

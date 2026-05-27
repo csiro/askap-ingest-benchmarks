@@ -62,30 +62,14 @@ Key parset parameters:
 | `count`     | 10              | Number of gather cycles            |
 | `chunksize` | 216×36×4×78     | Payload size per rank (bytes)      |
 
-## Licence
+## Licence and Notices
 
-Copyright (c) 2010 Commonwealth Scientific and Industrial Research Organisation
-(CSIRO) ABN 41 687 119 230.
+This software is copyright CSIRO and distributed under the GNU General Public
+License v3. See [NOTICE](NOTICE) for the source code offer and compliance
+information, [LICENSE](LICENSE) for the full licence text, and
+[3RD-PARTY.txt](3RD-PARTY.txt) for the full runtime dependency audit.
 
-This software is distributed under the GNU General Public License v3 (GPL v3).
-See [LICENSE](LICENSE) for the full licence text.
-
-### Source Code Offer
-
-In accordance with the GPL v3, the complete corresponding machine-readable
-source code for this software is available on written request:
-
-  **Contact:** Stephen Ord (stephen.ord@csiro.au)
-
-This offer is valid for 3 years from the date of receiving this software.
-
-### Third-Party Dependencies
-
-This container links against a number of third-party libraries. Full licence
-details for all runtime dependencies are in [3RD-PARTY.txt](3RD-PARTY.txt).
-
-The runtime dependency audit was derived from `ldd` on the benchmark binaries
-inside this container. Notable licences:
+Notable third-party runtime licences:
 
 | Component         | Licence      |
 |-------------------|--------------|
