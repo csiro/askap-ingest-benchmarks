@@ -10,7 +10,7 @@
 # Run (see README.md for usage):
 #   docker run --rm askap-ingest-benchmarks tMSSink --help
 
-ARG BASE_IMAGE="ghcr.io/csiro-internal/askap-services:main"
+ARG BASE_IMAGE="ghcr.io/csiro-internal/askap-services:AXA-3986-tests-for-ingest-rfq"
 FROM ${BASE_IMAGE}
 
 LABEL org.opencontainers.image.title="ASKAP Ingest Benchmarks"
