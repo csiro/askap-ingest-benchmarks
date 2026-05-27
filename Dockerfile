@@ -29,6 +29,7 @@ COPY --from=main_image /usr/local/askap-services/bin/tMSSink /usr/local/askap-se
 COPY --from=main_image /usr/local/askap-services/bin/tGatherPerf /usr/local/askap-services/bin/tGatherPerf
 COPY --from=main_image /usr/local/askap-services/etc/ /usr/local/askap-services/etc/
 COPY --from=main_image /usr/local/askap-services/lib/ /usr/local/askap-services/lib/
+COPY --from=main_image /bin/spack/ /bin/spack/
 
 # Clean up
 
