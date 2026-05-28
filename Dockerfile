@@ -25,8 +25,13 @@ LABEL org.opencontainers.image.licenses="GPL-3.0-or-later"
 LABEL org.opencontainers.image.source="https://github.com/csiro-internal/askap-ingest-benchmarks"
 
 # Some contents from the main image are copied across to the target image.
+# These are the main binaries.
 COPY --from=main_image /usr/local/askap-services/bin/tMSSink /usr/local/askap-services/bin/tMSSink
+COPY --from=main_image /usr/local/askap-services/bin/check_tmssink.py /usr/local/askap-services/bin/check_tmssink.py
 COPY --from=main_image /usr/local/askap-services/bin/tGatherPerf /usr/local/askap-services/bin/tGatherPerf
+COPY --from=main_image /usr/local/askap-services/bin/check_tgather.py /usr/local/askap-services/bin/check_tgather.py
+
+# The followings are the supporting files and libraries.
 COPY --from=main_image /usr/local/askap-services/etc/ /usr/local/askap-services/etc/
 COPY --from=main_image /usr/local/askap-services/lib/ /usr/local/askap-services/lib/
 COPY --from=main_image /usr/bin/spack/ /usr/bin/spack/
@@ -41,6 +46,9 @@ RUN echo "Copying from temporary location" \
     && echo "Cleaning up" \
     && rm -rf /root/tmp \
     && ldconfig
+
+# Measures data
+COPY --from=main_image /usr/local/share/casacore/ /usr/local/share/casacore/
 
 # Install licence and notice files alongside the binaries
 COPY NOTICE         /usr/local/askap-services/NOTICES/NOTICE
