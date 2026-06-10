@@ -1,86 +1,74 @@
-# ASKAP Ingest Benchmarks
+# A suit of performance tests for ASKAP ingest
 
-Performance benchmark binaries for the ASKAP (Australian Square Kilometre Array
-Pathfinder) ingest pipeline, released for the purposes of vendor benchmarking
-under the CSIRO RfQ process.
+The suit consists of the following files:
 
-## Benchmarks
+- `askap-ingest-benchmarks_axa-3988-v2.sif` container with all the required executables, libraries and check scripts
+- `setup.sh` common setup for all tests 
+- `test_setup.sh` general osu sanity test to see if MPI from host properly injected into the container by checking to see if comm world size is correct (has nodes x ntasks per node)
+- `test_tgather.sh` performance test for the general communication
+- `test_tmssink.sh` write performance test
+- `README.md` this file
 
-### tMSSink
+## Prerequisites
 
-Simulates the ASKAP ingest pipeline writing Measurement Sets (MS) with mock
-visibility data. Tests the end-to-end ingest write path including data conversion,
-MS creation, and parallel I/O under MPI.
+The following needs to be installed on the host (and corresponding modules loaded, if appropriate):
 
-### tGatherPerf
+- `Singularity/Apptainer` container engine
+- `MPICH` or at least MPI library that is ABI compatible with MPICH
+- `SLURM`
 
-Tests raw MPI gather throughput with mock visibility data. Measures the
-communication performance of the rank-aggregation step that precedes MS writing.
+A writable directory where the container and bash scripts are located. Note, it is assumed that the test will be executed from this
+directory. The mock up data are written to the local directory, so it is important to run the tests in the appropriate location.
 
-## Container
+The scripts setup singularity-specific environment variables to inject host-specific MPICH library. This step is normally required to
+achieve adequate performance of tgather test. The other test, tmssink, doesn't do heavy MPI communication and, therefore, is not
+as sensitive. One may also need to define `MPICH_ROOT` environment variable to point to the local mpich installation or defined `SINGULARITY_MODULE`
+for the module that sets up singularity runtime environment to inject MPI from the host. 
 
-The benchmark binaries are distributed as a Docker/OCI container image. The
-image is built on top of the ASKAPsoft build environment (Ubuntu 24.04, MPICH
-3.4.3) and contains all required runtime dependencies.
+### SLURM config
 
-```
-docker pull ghcr.io/csiro-internal/askap-ingest-benchmarks:latest
-```
+The slurm configuration assumed in the acceptance tests is a partition called `workq` that includes all the nodes in the cluster and an account `askaprt`.
+The scripts can be updated to use different partitions and accounts by changing `setup.sh`.
 
-## Running the Benchmarks
+## Running the tests
 
-Both benchmarks are driven by a LOFAR ParameterSet (parset) configuration file
-passed with `-c`. An optional logger configuration file can be supplied with `-l`.
+Provided all prerequisites are met, the tests can be run by executing the appropriate bash script from the directory containing 
+the tests, e.g. `./test_tgather.sh` or `test_tmssink.sh`. At the end of the distributed job, a python script is executed from the container
+to analyse the log output and give either PASS or FAIL verdict.
 
-### tMSSink
-
-```bash
-mpirun -np <N> /usr/local/askap-services/bin/tMSSink \
-    -c tMSSink.in \
-    -l askap.log_cfg
-```
-
-Key parset parameters:
-
-| Parameter   | Default | Description                              |
-|-------------|---------|------------------------------------------|
-| `count`     | 10      | Number of cycles to simulate             |
-| `syncranks` | false   | Synchronise MPI ranks between cycles     |
-
-### tGatherPerf
+These tests make use of key environment variables related to singularity to inject host MPI libraries in the container runtime. This is set in 
+the script and should only require setting an environment variable. Tests should be run as follows
 
 ```bash
-mpirun -np <N> /usr/local/askap-services/bin/tGatherPerf \
-    -c tGatherPerf.in \
-    -l askap.log_cfg
+export MPICH_ROOT=/opt/mpich/mpich-x.y.z/
+./<script_name>
 ```
 
-Key parset parameters:
+The code two tests also rely on a specific distribution of MPI ranks per node, specified in the tests. The two performance tests can fail such that 
+the python code that checks failure reports the jobs having not properly run with MPI. To test the basic environment is correctly working run `test_setup.sh`
+which will run a multi-node, several ranks per node test. 
 
-| Parameter   | Default         | Description                        |
-|-------------|-----------------|------------------------------------|
-| `count`     | 10              | Number of gather cycles            |
-| `chunksize` | 216×36×4×78     | Payload size per rank (bytes)      |
+## Notes on individual tests
 
-## Licence and Notices
+### test_tgather.sh
 
-This software is copyright CSIRO and distributed under the GNU General Public
-License v3. See [NOTICE](NOTICE) for the source code offer and compliance
-information, [LICENSE](LICENSE) for the full licence text, and
-[3RD-PARTY.txt](3RD-PARTY.txt) for the full runtime dependency audit.
+This test executes a series of MPI collective calls with the data structure similar to the one used in the production system. The script
+is setup to run the test with 384 ranks packing 24 ranks per node. The number of ranks per node can be increased if necessary, only the
+total number of ranks is the hard requirement (and matches our current operational use). The pass threshold for the average run time per
+per cycle (across cycles, the data transfer is bursty, 100 such bursts are simulated) is 2.5 seconds.
 
-Notable third-party runtime licences:
+**PASS**: Time to completion < 2.5 s
 
-| Component         | Licence      |
-|-------------------|--------------|
-| LOFAR Common/Blob | GPL v3+      |
-| ZeroC Ice 3.7     | GPL v2 only  |
-| CASAcore 3.6.1    | LGPL v2+     |
-| ZeroMQ 4.3.5      | LGPL v3      |
-| GSL 2.7.1         | GPL v3       |
-| WCSlib 7.3        | GPL v3       |
-| FFTW 3.3.10       | GPL v2+      |
-| OpenSSL 3.0.13    | Apache 2.0   |
-| Boost 1.80.0      | BSL 1.0      |
-| CFITSIO 4.3.0     | Public domain|
-| MPICH 3.4.3       | BSD/MIT      |
+### test_tmssink.sh
+
+It mimics writing patterns of the current operational setup and writes data in a real-world astronomy format. The script is setup to run
+the test with 288 ranks packing 18 ranks per node. The number of ranks per node can be increased if necessary. The pass threshold for the
+average (across cycles, data writing is bursty and 10 such bursts are simulated) is faster than 1.5 seconds.
+
+**PASS**: Time to completion < 1.5 s
+
+
+
+## Contact details
+
+Contact Max Voronkov <maxim.voronkov@csiro.au> for further information
