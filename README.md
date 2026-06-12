@@ -42,9 +42,9 @@ askap-ingest-benchmarks-v2.tar.bz2
 
 The suit consists of the following files:
 
-- `askap-ingest-benchmarks_axa-3988-v2.sif`: Singularity container with all the 
-  required executables, libraries and check scripts. This container is made from
-  the aforementioned container image.
+- `askap-ingest-benchmarks_axa-3988-v2.sif`: **Singularity** container with 
+  all the required executables, libraries and check scripts. 
+  This container is made from the aforementioned container image.
 - `setup.sh`: Common setup script for all tests.
 - `test_setup.sh`: General OSU sanity test to see if MPI from host properly 
   injected into the container by checking to see if COMM world size is correct 
@@ -53,7 +53,7 @@ The suit consists of the following files:
 - `test_tmssink.sh`: Write performance test.
 - `README.md`: This file.
 
-Note that the scripts are also available as source code in this repository.
+Note that the scripts are also available in this repository.
 
 
 ## Prerequisites
@@ -87,22 +87,23 @@ The scripts can be updated to use different partitions and accounts by changing
 `setup.sh`.
 
 
-## Running the tests
+## Running The Tests
 
 Provided all prerequisites are met, the tests can be run by executing 
 the appropriate bash script from the directory containing the tests,
-e.g. `./test_tgather.sh` or `test_tmssink.sh`. 
+e.g. `test_tgather.sh` or `test_tmssink.sh`. 
 At the end of the distributed job, a python script is executed from 
 the container to analyse the log output and give either PASS or FAIL verdict.
 
 These tests make use of key environment variables related to singularity 
 to inject host MPI libraries in the container runtime. 
 This is set in the script and should only require setting an environment variable.
-Tests should be run as follows:
+Tests should be run as follows (replace with appropriate mpich):
 
 ```bash
 export MPICH_ROOT=/opt/mpich/mpich-x.y.z/
-./<script_name>
+./test_tgather.sh
+./test_tmssink.sh
 ```
 
 The two tests also rely on a specific distribution of MPI ranks per node, 
@@ -112,7 +113,7 @@ To test the basic environment is correctly working, run `test_setup.sh`,
 which will run a multi-node, several ranks per node test. 
 
 
-## Notes on individual tests
+## Notes on Individual Tests
 
 ### test_tgather.sh
 
@@ -126,6 +127,24 @@ the data transfer is bursty, 100 such bursts are simulated) is 2.5 seconds.
 
 **PASS**: Time to completion < 2.5 s
 
+Note that  the core functionality of the script is provided by the
+executable `tGatherPerf`.
+It can be be invoked using the following command with the parameter file
+`tGatherPerf.in` and an optional logger configuration file.
+
+```bash
+mpirun -np <N> /usr/local/askap-services/bin/tGatherPerf \
+    -c tGatherPerf.in \
+    -l askap.log_cfg
+```
+
+Key parset parameters:
+
+| Parameter   | Default         | Description                        |
+|-------------|-----------------|------------------------------------|
+| `count`     | 10              | Number of gather cycles            |
+| `chunksize` | 216×36×4×78     | Payload size per rank (bytes)      |
+
 ### test_tmssink.sh
 
 It mimics writing patterns of the current operational setup and writes data 
@@ -136,6 +155,25 @@ The pass threshold for the average (across cycles, data writing is bursty
 and 10 such bursts are simulated) is faster than 1.5 seconds.
 
 **PASS**: Time to completion < 1.5 s
+
+Note that the core functionality of the script is provided by the 
+executable `tMSSink`.
+It can be be invoked using the following command with the parameter file
+`tMSSink.in` and an optional logger configuration file.
+
+```bash
+mpirun -np <N> /usr/local/askap-services/bin/tMSSink \
+    -c tMSSink.in \
+    -l askap.log_cfg
+```
+
+Key parset parameters:
+
+| Parameter   | Default | Description                              |
+|-------------|---------|------------------------------------------|
+| `count`     | 10      | Number of cycles to simulate             |
+| `syncranks` | false   | Synchronise MPI ranks between cycles     |
+
 
 
 ## Contact details
