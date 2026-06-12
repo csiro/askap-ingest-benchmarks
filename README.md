@@ -23,8 +23,8 @@ communication performance of the rank-aggregation step that precedes MS writing.
 
 The benchmark binaries are distributed as a Docker/OCI container image. The
 image is built on top of the ASKAPsoft build environment (Ubuntu 24.04, MPICH
-3.4.3) and contains all required runtime dependencies. It's stored in the 
-following registry:
+3.4.3) and contains all required runtime dependencies. It's stored in GitHub
+registry under the following name.
 
 ```
 ghcr.io/csiro/askap-ingest-benchmarks:axa-3988
@@ -33,18 +33,27 @@ ghcr.io/csiro/askap-ingest-benchmarks:axa-3988
 
 ## Benchmark Package
 
-A package of performance tests for ASKAP ingest, which includes the benchmark container.
+A package of performance tests for ASKAP ingest, which is distributed as 
+a compressed file.
+
+```
+askap-ingest-benchmarks-v2.tar.bz2
+```
+
 The suit consists of the following files:
 
-- `askap-ingest-benchmarks_axa-3988-v2.sif` Singularity container with all the 
-  required executables, libraries and check scripts.
-- `setup.sh` common setup for all tests.
-- `test_setup.sh` general OSU sanity test to see if MPI from host properly 
-  injected into the container by checking to see if comm world size is correct 
+- `askap-ingest-benchmarks_axa-3988-v2.sif`: Singularity container with all the 
+  required executables, libraries and check scripts. This container is made from
+  the aforementioned container image.
+- `setup.sh`: Common setup script for all tests.
+- `test_setup.sh`: General OSU sanity test to see if MPI from host properly 
+  injected into the container by checking to see if COMM world size is correct 
   (has nodes x ntasks per node).
-- `test_tgather.sh` performance test for the general communication.
-- `test_tmssink.sh` write performance test.
-- `README.md` this file.
+- `test_tgather.sh`: Performance test for the general communication.
+- `test_tmssink.sh`: Write performance test.
+- `README.md`: This file.
+
+Note that the scripts are also available as source code in this repository.
 
 
 ## Prerequisites
@@ -56,7 +65,8 @@ if appropriate):
 - `MPICH` or at least MPI library that is ABI compatible with MPICH.
 - `SLURM`
 
-A writable directory where the container and bash scripts are located. 
+Another requirement is a writable directory where the container and bash scripts 
+are located. 
 Note, it is assumed that the test will be executed from this directory.
 The mock up data are written to the local directory, so it is important to run 
 the tests in the appropriate location.
