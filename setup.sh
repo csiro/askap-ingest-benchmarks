@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euxo pipefail
 
 # if there is a module that sets up an MPI compatible singularity environment
 if [[ -z $MPICH_ROOT  && -z $SINGULARITY_MODULE ]]; then
