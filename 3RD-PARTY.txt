@@ -198,6 +198,12 @@ Expat  (libexpat.so.1)
   Version: 2.5.0
   License: MIT
 
+OSU Micro Benchmarks
+  https://mvapich.cse.ohio-state.edu/benchmarks/
+  Copyright (c) The Ohio State University
+  version: 7.3
+  License: BSD
+
 ===============================================================================
 MPI
 ===============================================================================
